@@ -12,8 +12,11 @@ const app: Application = express()
 const PORT = process.env['PORT'] || 8000;
 
 console.log(`Environment:${environment}`);
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-connectMongo();
+
+connectMongo().catch(err =>{
+	console.error(err);
+	process.exit(1);
+});
 
 //middleware
 app.use(express.json())
