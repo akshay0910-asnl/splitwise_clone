@@ -4,7 +4,8 @@ import express, { Request, Response, NextFunction, Application } from 'express';
 import cookieParser from 'cookie-parser';
 import createError from 'http-errors';
 import connectMongo from '@connections/mongo';
-import healthRouter from '@routes/HealthRoute';
+import healthRouter from '@routes/healthRoute';
+import v1Router from '@routes/v1Route';
 import errorHandler from '@middlewares/errorHandler';
 
 
@@ -24,7 +25,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 //routes
-app.use('/health', healthRouter)
+app.use('/health', healthRouter);
+app.use('/v1', v1Router);
+
 app.use('*', (_req: Request, _res: Response, _next: NextFunction) => {
 	_next(createError(404, `Route Not Found`));
 });
