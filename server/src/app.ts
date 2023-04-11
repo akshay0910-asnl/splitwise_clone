@@ -3,6 +3,7 @@ import environment from '@config/index';
 import express, { Request, Response, NextFunction, Application } from 'express';
 import cookieParser from 'cookie-parser';
 import createError from 'http-errors';
+import cors from 'cors';
 import connectMongo from '@connections/mongo';
 import healthRouter from '@routes/healthRoute';
 import v1Router from '@routes/v1Route';
@@ -20,9 +21,26 @@ connectMongo().catch(err =>{
 });
 
 //middleware
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+app.use(cors({
+	origin: function (origin, callback) {
+	  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+	  if (["http://127.0.0.1:5500"].indexOf(origin as string) !== -1) {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+		callback(null, true)
+	  } else {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+		callback(new Error('Not allowed by CORS'))
+	  }
+	},
+	credentials: true,
+	
+  }))
 
 //routes
 app.use('/health', healthRouter);

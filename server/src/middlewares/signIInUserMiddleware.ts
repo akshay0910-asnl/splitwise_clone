@@ -2,13 +2,13 @@ import { ValidationError, validateOrReject } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { NextFunction, Request, Response } from 'express';
 import createError from 'http-errors';
-import CreateUserRequestPayload from '@entities/createUserRequestPayload';
 import { validationSettings } from '@utils/constants';
+import SignInUserRequestPayload from '@entities/signInUserRequestPayload';
 
-const createUserMiddleware = async (_req: Request, _res: Response, _next: NextFunction) => {
-    const createUserRequestBody = plainToInstance(CreateUserRequestPayload, _req.body as object);
+const signInUserMiddleware = async (_req: Request, _res: Response, _next: NextFunction) => {
+    const signInUserRequestBody = plainToInstance(SignInUserRequestPayload, _req.body as object);
     try {
-        await validateOrReject(createUserRequestBody, validationSettings);
+        await validateOrReject(signInUserRequestBody, validationSettings);
         _next();
     } catch (errors) {
         const message = (errors as ValidationError[]).map((error: ValidationError) => Object.values(error.constraints || {})).join(', ');
@@ -16,4 +16,4 @@ const createUserMiddleware = async (_req: Request, _res: Response, _next: NextFu
     }
 }
 
-export default createUserMiddleware;
+export default signInUserMiddleware;

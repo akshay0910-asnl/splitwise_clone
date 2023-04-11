@@ -1,7 +1,9 @@
 import { Router } from 'express';
-import signupRoute from '@routes/signupRoute';
+import signUpRoute from '@routes/signUpRoute';
+import signInRoute from '@routes/signInRoute';
 const router = Router();
 
-router.use('/signup', signupRoute);
+router.use('/signUp', signUpRoute);
+router.use('/signIn', signInRoute);
 
 export default router;
